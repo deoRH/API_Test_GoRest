@@ -7,10 +7,14 @@ To Run this Postman Collection, please follow the below steps,
 - Locate the Postman Collection Files
 A.Stored as postman_collection/test/Ascendion.postman_collection.json
 
-- Import into Postman (GUI)
+- Import into Postman (GUI) :
+  
 A. Open the Postman desktop app.
+
 B. Click "Import" (top-left).
+
 C. Select the *.postman_collection.json file.
+
 
 Before run please change the accesstoken by copy on https://gorest.co.in/my-account/access-tokens 
 
