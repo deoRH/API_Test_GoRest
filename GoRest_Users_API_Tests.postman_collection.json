@@ -1,0 +1,132 @@
+{
+  "info": {
+    "name": "GoRest Users API Tests",
+    "description": "API test collection for https://gorest.co.in/public/v2/users covering:\n\nScenario 1: Create a new user (Name, Gender, Email, Status) and verify the returned id is numeric.\nScenario 2: Verify the status of the first entry in the users list is either 'active' or 'inactive'.\n\nBefore running, set the 'accessToken' variable in the environment to a valid GoRest personal access token (get one at https://gorest.co.in/my-account/access-tokens after signing in).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Scenario 1 - Create User and Verify Numeric ID",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"{{$randomFullName}}\",\n  \"gender\": \"male\",\n  \"email\": \"{{$randomEmail}}\",\n  \"status\": \"active\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/public/v2/users",
+          "host": ["{{baseUrl}}"],
+          "path": ["public", "v2", "users"]
+        },
+        "description": "Creates a new user (employee entry) with Name, Gender, Email and Status (active/inactive). Requires a Bearer access token since POST is a write operation."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201 Created\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "let jsonData = pm.response.json();",
+              "",
+              "pm.test(\"Response contains an id field\", function () {",
+              "    pm.expect(jsonData).to.have.property('id');",
+              "});",
+              "",
+              "pm.test(\"id is returned in numerical format\", function () {",
+              "    pm.expect(jsonData.id).to.be.a('number');",
+              "    pm.expect(Number.isInteger(jsonData.id)).to.be.true;",
+              "    pm.expect(isNaN(jsonData.id)).to.be.false;",
+              "});",
+              "",
+              "pm.test(\"Name, Gender, Email and Status match what was submitted\", function () {",
+              "    const requestBody = JSON.parse(pm.request.body.raw);",
+              "    pm.expect(jsonData.name).to.eql(requestBody.name);",
+              "    pm.expect(jsonData.gender).to.eql(requestBody.gender);",
+              "    pm.expect(jsonData.email).to.eql(requestBody.email);",
+              "    pm.expect(jsonData.status).to.eql(requestBody.status);",
+              "});",
+              "",
+              "pm.test(\"Status is either active or inactive\", function () {",
+              "    pm.expect(['active', 'inactive']).to.include(jsonData.status);",
+              "});",
+              "",
+              "// Save created user id for potential reuse in other requests/scenarios",
+              "if (jsonData.id) {",
+              "    pm.collectionVariables.set('createdUserId', jsonData.id);",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Scenario 2 - Verify First User Status is Active or Inactive",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/public/v2/users",
+          "host": ["{{baseUrl}}"],
+          "path": ["public", "v2", "users"]
+        },
+        "description": "Fetches the users list and verifies the status field of the first entry is either 'active' or 'inactive'. GET requests do not strictly require a token on GoRest, but the header is included for consistency and to avoid rate-limit restrictions tied to anonymous calls."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200 OK\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "let jsonData = pm.response.json();",
+              "",
+              "pm.test(\"Response is a non-empty array\", function () {",
+              "    pm.expect(jsonData).to.be.an('array');",
+              "    pm.expect(jsonData.length).to.be.above(0);",
+              "});",
+              "",
+              "pm.test(\"First entry has a status field\", function () {",
+              "    pm.expect(jsonData[0]).to.have.property('status');",
+              "});",
+              "",
+              "pm.test(\"First entry status is either 'active' or 'inactive'\", function () {",
+              "    pm.expect(['active', 'inactive']).to.include(jsonData[0].status);",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "createdUserId",
+      "value": ""
+    }
+  ]
+}
