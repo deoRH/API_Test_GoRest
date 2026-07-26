@@ -1,0 +1,108 @@
+{
+	"id": "4e1ba87e-ffac-4b5d-833e-5c1eab7b4369",
+	"name": "Gorest_API_User_Test",
+	"timestamp": "2026-07-26T11:23:33.578Z",
+	"collection_id": "32582700-bba01ebc-8bf2-4d02-ae92-f0a835ba7ee6",
+	"folder_id": 0,
+	"environment_id": "32582700-eddf8ef1-4957-4d23-be5b-c8af075a02e6",
+	"totalPass": 6,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2026-07-26T11:23:32.844Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "2701a88b-ff92-497e-80aa-6af572c2f18a",
+			"name": "Scenario_1_Create_New_User_And_Verify_ID",
+			"url": "https://gorest.co.in/public/v2/users",
+			"time": 376,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status code is 201 Created": true,
+				"Response contains an id field": true,
+				"ID is returned in numerical format": true
+			},
+			"testPassFailCounts": {
+				"Status code is 201 Created": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response contains an id field": {
+					"pass": 1,
+					"fail": 0
+				},
+				"ID is returned in numerical format": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				376
+			],
+			"allTests": [
+				{
+					"Status code is 201 Created": true,
+					"Response contains an id field": true,
+					"ID is returned in numerical format": true
+				}
+			]
+		},
+		{
+			"id": "eb7cd326-7141-4ff2-b183-3c0cc4ff9d3e",
+			"name": "Scenario_2_Verify_User_Status",
+			"url": "https://gorest.co.in/public/v2/users",
+			"time": 204,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200 OK": true,
+				"Response is not empty": true,
+				"First user's status is active and inactive": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200 OK": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response is not empty": {
+					"pass": 1,
+					"fail": 0
+				},
+				"First user's status is active and inactive": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				204
+			],
+			"allTests": [
+				{
+					"Status code is 200 OK": true,
+					"Response is not empty": true,
+					"First user's status is active and inactive": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 580,
+	"collection": {
+		"requests": [
+			{
+				"id": "2701a88b-ff92-497e-80aa-6af572c2f18a",
+				"method": "POST"
+			},
+			{
+				"id": "eb7cd326-7141-4ff2-b183-3c0cc4ff9d3e",
+				"method": "GET"
+			}
+		]
+	}
+}
